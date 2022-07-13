@@ -1,6 +1,0 @@
-/lista_spesa - Visualizza una lista della spesa
-/modifica_quantita {categoria} - modifica la quantità di un elemento in lista. Inviare la categoria dell'oggetto da modificare insieme al comando.
-/aggiungi {nome oggetto} - aggiunge un nuovo elemento alla lista. Inviare il nome dell'oggetto insieme al comando.
-/turni - ritorna la lista dei turni delle pulizie per una data stanza.
-/pulizia - aggiunge il giorno corrente come nuovo giorno di pulizia.
-/annulla - annulla il comando precedentemente inviato.
