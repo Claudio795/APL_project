@@ -1,6 +1,0 @@
-C:\Users\claud\Desktop\Client_Desktop\Client.exe
-C:\Users\claud\Desktop\Client_Desktop\Client.dll
-C:\Users\claud\Desktop\Client_Desktop\Client.deps.json
-C:\Users\claud\Desktop\Client_Desktop\Client.runtimeconfig.json
-C:\Users\claud\Desktop\Client_Desktop\Client.pdb
-C:\Users\claud\Desktop\Client_Desktop\Newtonsoft.Json.dll
