@@ -185,10 +185,21 @@ func (groceryModel GroceryModel) DeleteItem(identifer int64) (int64, error) {
 	}
 }
 
-//===================================== UPDATE QUANTITY ===============================================================
-func (groceryModel GroceryModel) UpdateQuantity(identifer int64, Quantity int64) (int64, error) {
+//================================== DELETE ITEM BY NAME ==================================================================
+func (groceryModel GroceryModel) DeleteItemByName(name string) (int64, error) {
+	_, err := groceryModel.DB.Exec("DELETE FROM dbo.Grocery WHERE Name = @p1 ", name)
 
-	row := groceryModel.DB.QueryRow("SELECT Quantity FROM dbo.Grocery WHERE Id = @p1", identifer)
+	if err != nil {
+		return 0, err
+	} else {
+		return 1, nil
+	}
+}
+
+//===================================== UPDATE QUANTITY ===============================================================
+func (groceryModel GroceryModel) UpdateQuantity(name string, Quantity int64) (int64, error) {
+
+	row := groceryModel.DB.QueryRow("SELECT Quantity FROM dbo.Grocery WHERE Name = @p1", name)
 	var initial_quantity int64
 
 	err := row.Scan(&initial_quantity)
@@ -200,14 +211,14 @@ func (groceryModel GroceryModel) UpdateQuantity(identifer int64, Quantity int64)
 	fmt.Printf("%d\n", Quantity_total)
 
 	if Quantity_total <= 0 {
-		_, err1 := groceryModel.DeleteItem(identifer)
+		_, err1 := groceryModel.DeleteItemByName(name)
 		if err1 != nil {
 			return 0, err1
 		}
 		fmt.Printf("Item removed from list\n")
 		return 1, nil
 	}
-	_, err2 := groceryModel.DB.Exec("UPDATE dbo.Grocery SET Quantity = @p1 WHERE Id = @p2 ", Quantity_total, identifer)
+	_, err2 := groceryModel.DB.Exec("UPDATE dbo.Grocery SET Quantity = @p1 WHERE Name = @p2 ", Quantity_total, name)
 	if err2 != nil {
 		return 0, err2
 	}

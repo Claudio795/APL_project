@@ -17,8 +17,9 @@ import (
 //=========================== HANDLER =========================================================================
 func RoomHandler(roomRouter *mux.Router) {
 
-	// CRUD Clean
+	// CRUD Room
 	roomRouter.HandleFunc("/getall", GetAllRooms).Methods("GET")
+	roomRouter.HandleFunc("/getroom/{room}", GetRoom).Methods("GET")
 	roomRouter.HandleFunc("/getturns/{room}", GetTurns).Methods("GET")
 	roomRouter.HandleFunc("/update", UpdateTurns).Methods("PUT")
 }
@@ -43,6 +44,33 @@ func GetAllRooms(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(roomList)
 	}
+}
+
+//================================ GET ROOM BY NAME ========================================
+func GetRoom(w http.ResponseWriter, r *http.Request) {
+
+	roomName, _ := mux.Vars(r)["room"]
+
+	db, err := config.DbConnect()
+	defer config.DbDisconnect(db)
+
+	if err != nil {
+		log.Fatal("Error connecting to database: " + err.Error())
+		return
+	}
+	log.Printf("Connected!\n")
+	UserModel := models.UserModel{
+		DB: db,
+	}
+
+	room, err2 := UserModel.GetRoom(roomName)
+	if err2 != nil {
+		http.Error(w, "Room not found", http.StatusNotFound)
+		fmt.Println(err2)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(room)
 }
 
 //================================ UPDATE TURNS ========================================

@@ -135,7 +135,7 @@ func AuthUser(w http.ResponseWriter, r *http.Request) {
 	// check if the user is present
 	isPresent, _ := UserModel.SearchByUsername(authData.Username)
 	if isPresent == nil {
-		http.Error(w, "User doesn't exists", http.StatusForbidden)
+		http.Error(w, "User doesn't exists", http.StatusUnauthorized)
 		return
 	}
 	// chech password
@@ -169,8 +169,8 @@ func CreatetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check if the user is present in the db
-	id := user.ID
-	isPresent, _ := UserModel.SearchById(id)
+	username := user.Username
+	isPresent, _ := UserModel.SearchByUsername(username)
 	if isPresent != nil {
 		http.Error(w, "User already exists", http.StatusForbidden)
 		return

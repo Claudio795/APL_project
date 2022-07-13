@@ -36,6 +36,28 @@ func (roomModel RoomModel) FindAll() ([]entities.Room, error) {
 	return rooms, nil
 }
 
+//====================== GET ROOM BY NAME ===========================================
+func (userModel UserModel) GetRoom(keyword string) (*entities.Room, error) {
+	var id int64
+	var name string
+	var userList string
+
+	// if the user is present in the db, then errCheck is 'true'
+	row := userModel.DB.QueryRow("SELECT * FROM dbo.Rooms WHERE Name = @p1", keyword)
+	result := row.Scan(&id, &name, &userList)
+
+	if result == sql.ErrNoRows {
+		return nil, result
+
+	}
+	room := entities.Room{
+		ID:        id,
+		Name:      name,
+		UsersList: userList,
+	}
+	return &room, nil
+}
+
 //====================== UPDATE TURNS ==========================================================
 func (roomModel RoomModel) UpdateTurns(newTurns string, keyword string) (int64, error) {
 	_, err := roomModel.DB.Exec("UPDATE dbo.Rooms SET UserList = @p1 WHERE Name = @p2",

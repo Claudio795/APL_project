@@ -24,7 +24,7 @@ func GroceryHandler(groceryRouter *mux.Router) {
 	groceryRouter.HandleFunc("/geturgent", GetUrgent).Methods("GET")
 	groceryRouter.HandleFunc("/insert", InsertNewItem).Methods("POST")
 	groceryRouter.HandleFunc("/delete/{id}", DeleteItem).Methods("DELETE")
-	//groceryRouter.HandleFunc("/updatequantity", UpdateQuantity).Methods("PUT")
+	groceryRouter.HandleFunc("/updatequantity", UpdateQuantity).Methods("PUT")
 	//groceryRouter.HandleFunc("/updateurgency/{id}", UpdateUrgency).Methods("PUT")
 	groceryRouter.HandleFunc("/updateitem", UpdateItem).Methods("PUT")
 }
@@ -146,6 +146,7 @@ func UpdateQuantity(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&item)
 
 	if err != nil {
+		fmt.Print("sei qui")
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
@@ -162,22 +163,23 @@ func UpdateQuantity(w http.ResponseWriter, r *http.Request) {
 		DB: db,
 	}
 
-	// check if the item is present in the db
-	id := item.ID
-	isPresent, _ := GroceryModel.SearchItem(id)
-	if isPresent == nil {
-		fmt.Println("Item missing, I'm adding it to the cart")
-		_, err3 := GroceryModel.InsertNewItem(item)
-		if err3 != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+	name := item.Name
+	/*
+		isPresent, _ := GroceryModel.SearchItem(id)
+		if isPresent == nil {
+			fmt.Println("Item missing, I'm adding it to the cart")
+			_, err3 := GroceryModel.InsertNewItem(item)
+			if err3 != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
+			w.WriteHeader(http.StatusOK)
 			return
 		}
-		w.WriteHeader(http.StatusOK)
-		return
-	}
+	*/
 
 	quantity := item.Quantity
-	_, err3 := GroceryModel.UpdateQuantity(id, quantity)
+	_, err3 := GroceryModel.UpdateQuantity(name, quantity)
 	if err3 != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

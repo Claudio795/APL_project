@@ -1,0 +1,6 @@
+C:\Users\claud\Desktop\Home Manager\Client.exe
+C:\Users\claud\Desktop\Home Manager\Client.dll
+C:\Users\claud\Desktop\Home Manager\Client.deps.json
+C:\Users\claud\Desktop\Home Manager\Client.runtimeconfig.json
+C:\Users\claud\Desktop\Home Manager\Client.pdb
+C:\Users\claud\Desktop\Home Manager\Newtonsoft.Json.dll
